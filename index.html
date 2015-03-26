@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Google Maps - jQuery Mobile Demos</title>
+	  <!-- Include meta tag to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Include jQuery Mobile stylesheets -->
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <!-- Include the jQuery library -->
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <!-- Include the jQuery Mobile library -->
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  
+ 	
+</head>
+<body>
+
+<div data-role="page" id="pageone">
+  <div data-role="header">
+    <h1>Badger Location Tracker</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  	
+    
+    <button onclick="getLocation()">Get My Location</button>
+    <p id="demo"></p>
+    <p>Date</p>
+    <input type="date">
+    <p>Time</p>
+    <input type="time">
+    <input type="file" capture="camera" accept="image/*" id="takePictureField">
+    
+  </div>
+
+  <div data-role="footer">
+    <h1>DARD Digital Servces</h1>
+  </div>
+</div>
+
+<div data-role="page" id="pagetwo">
+  <div data-role="header">
+    <h1>Badger Location Tracker</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <a href="#pageone" data-role="button">Go to Page One</a>
+  </div>
+
+  <div data-role="footer">
+    <h1>DARD Digital Servces</h1>
+  </div>
+</div>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude;	
+}
+</script>
