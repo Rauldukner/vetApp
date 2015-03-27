@@ -12,41 +12,91 @@
   <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
   <!-- Include the jQuery Mobile library -->
   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+  
+  <style>
+#map-page { width: 100%; height: 100%; padding: 0; }
+#map-canvas { width: 80%; height: 35%; padding: 0; margin-left:auto; margin-right:auto; margin-top:10px;}
+#form { width:80%; margin-left:auto; margin-right:auto;}
+
+
+</style>
+
+
+  
+  
+  <script>
+/*
+ * Google Maps documentation: http://code.google.com/apis/maps/documentation/javascript/basics.html
+ * Geolocation documentation: http://dev.w3.org/geo/api/spec-source.html
+ */
+$( document ).on( "pageinit", "#map-page", function() {
+    var defaultLatLng = new google.maps.LatLng(34.0983425, -118.3267434);  // Default to Hollywood, CA when no geolocation support
+    if ( navigator.geolocation ) {
+        function success(pos) {
+            // Location found, show map with these coordinates
+            drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+        }
+        function fail(error) {
+            drawMap(defaultLatLng);  // Failed to find location, show default map
+        }
+        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+        navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+    } else {
+        drawMap(defaultLatLng);  // No geolocation support, show default map
+    }
+    function drawMap(latlng) {
+        var myOptions = {
+            zoom: 10,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+        // Add an overlay to the map of current lat/lng
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title: "Greetings!"
+        });
+    }
+});
+
+
+</script>
+
+
+   
   
  	
 </head>
 <body>
 
-<div data-role="page" id="pageone">
+<div data-role="page" id="map-page">
   <div data-role="header">
     <h1>Badger Location Tracker</h1>
   </div>
 
-  <div data-role="main" class="ui-content">
-  	
+  <div data-role="main" class="ui-content" id="map-canvas" >    
     
-    <button onclick="getLocation()">Get My Location</button>
+    
+    
+        
+  </div>
+  
+  <div data-role="main" id="form">
+  
+  <button onclick="getLocation()">Get My Co-Ordinates</button>
     <p id="demo"></p>
+    
+    
+    
     <p>Date</p>
     <input type="date">
     <p>Time</p>
     <input type="time">
     <input type="file" capture="camera" accept="image/*" id="takePictureField">
-    
-  </div>
-
-  <div data-role="footer">
-    <h1>DARD Digital Servces</h1>
-  </div>
-</div>
-
-<div data-role="page" id="pagetwo">
-  <div data-role="header">
-    <h1>Badger Location Tracker</h1>
-  </div>
-
-  <div data-role="main" class="ui-content">
-    <a href="#pageone" data-role="button">Go to Page One</a>
+	<button >Save</button>
   </div>
 
   <div data-role="footer">
@@ -70,3 +120,6 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude;	
 }
 </script>
+
+</body>
+</html>
